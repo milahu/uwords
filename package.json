@@ -1,7 +1,8 @@
 {
   "name": "uwords",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Get words from text by grouping together characters from Unicode letter groups (Lu, Ll, Lt, Lm, Lo).",
+  "homepage": "https://github.com/AlexAtNet/uwords",
   "main": "index.js",
   "scripts": {
     "test": "grunt test"
@@ -11,7 +12,21 @@
     "words",
     "unicode"
   ],
-  "author": "Alex Netkachov <alex.netkachov@gmail.com>",
+  "author": {
+    "name": "Alex Netkachov",
+    "email": "alex.netkachov@gmail.com",
+    "url": "http://alexatnet.com/"
+  },
+  "bugs": {
+    "url": "https://github.com/AlexAtNet/uwords/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AlexAtNet/uwords.git"
+  },
+  "engines": [
+    "node"
+  ],
   "license": "BSD-2-Clause",
   "devDependencies": {
     "unicode": "~0.5.2",

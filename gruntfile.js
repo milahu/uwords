@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    /*global require, module, __dirname */
+    /*global require, module, __dirname, console */
 
     module.exports = function (grunt) {
         grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -104,6 +104,56 @@
 
             require('fs').writeFileSync(__dirname + '/letters.json',
                 JSON.stringify(compacted, null, 2));
+        });
+
+        grunt.registerTask('benchmark', function () {
+            var ruHi, enHi, content, uwords, words, start;
+
+            ruHi = String.fromCharCode(1055, 1088, 1080, 1074, 1077, 1090);
+            enHi = 'Hi';
+
+            content = '';
+            while (content.length < 10000000) {
+                content += ruHi + ' ' + enHi + ' ';
+            }
+
+            uwords = require('./');
+
+            start = new Date().getTime();
+            words = uwords(content);
+            console.log('size=' + content.length + ' words=' + words.length +
+                ' time=' + (new Date().getTime() - start) + 'ms');
+        });
+
+        grunt.registerTask('compare-uwords-xregexp', function () {
+            var ruHi, enHi, content, uwords, xRegExp, wordXre, words, start;
+
+            ruHi = String.fromCharCode(1055, 1088, 1080, 1074, 1077, 1090);
+            enHi = 'Hi';
+
+            content = '';
+            while (content.length < 1000) {
+                content += ruHi + ' ' + enHi + ' ';
+            }
+
+            uwords = require('./');
+            xRegExp = require('xregexp').XRegExp;
+            wordXre = xRegExp('\\p{L}+');
+
+            start = new Date().getTime();
+            words = uwords(content);
+            console.log('library=uwords size=' + content.length +
+                ' words=' + words.length +
+                ' time=' + (new Date().getTime() - start) + 'ms');
+
+            start = new Date().getTime();
+            words = [ ];
+            xRegExp.forEach(content, wordXre, function (match) {
+                words.push(match[0]);
+            });
+            console.log('library=xregexp size=' + content.length +
+                ' words=' + words.length +
+                ' time=' + (new Date().getTime() - start) + 'ms');
         });
 
         grunt.registerTask('default', [ 'jshint', 'test' ]);

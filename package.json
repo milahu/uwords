@@ -1,6 +1,6 @@
 {
   "name": "uwords",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Get words from text by grouping together characters from Unicode letter groups (Lu, Ll, Lt, Lm, Lo).",
   "homepage": "https://github.com/AlexAtNet/uwords",
   "main": "index.js",

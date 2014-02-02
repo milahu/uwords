@@ -7,28 +7,26 @@
         letters = require('./letters.js');
 
     module.exports = function (text) {
-        var words, word, index, limit, code;
+        var words, position, flag, index, limit;
 
         words = [ ];
-        word = null;
+        position = 0;
+        flag = false;
 
         for (index = 0, limit = text.length; index < limit; index += 1) {
-            code = text.charCodeAt(index);
-            if (-1 === _.indexOf(letters, code, true)) {
-                if (null !== word) {
-                    words.push(word.join(''));
-                    word = null;
+            if (-1 === _.indexOf(letters, text.charCodeAt(index), true)) {
+                if (flag) {
+                    words.push(text.substring(position, index));
+                    flag = false;
                 }
-            } else {
-                if (null === word) {
-                    word = [ ];
-                }
-                word.push(String.fromCharCode(code));
+            } else if (!flag) {
+                position = index;
+                flag = true;
             }
         }
 
-        if (null !== word) {
-            words.push(word.join(''));
+        if (flag) {
+            words.push(text.substring(position));
         }
 
         return words;

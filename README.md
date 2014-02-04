@@ -41,7 +41,7 @@ Alternatives
 ------------
 
 The words can be extracted from the text by using the extended regular
-expressions library XRegExp[1]. However, the speed is 1500x slower.
+expressions library [XRegExp][1]. However, it is 1500x slower.
 
 Run the following command to compare the libraries on your system:
 
@@ -54,6 +54,6 @@ Sample output:
     library=uwords size=1000 words=200 time=2ms
     library=xregexp size=1000 words=200 time=3384ms
 
-You will need to install XRegExp to run this comparison.
+You need to install XRegExp to run this comparison.
 
 [1]: http://xregexp.com/

@@ -127,20 +127,19 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('compare-uwords-xregexp', function () {
-        var ruHi, enHi, content, uwords, xRegExp, wordXre, words1, words2, start;
+        var ruHi, enHi, content, uwords, xRegExp, wordXre, words1, words2, words3, start;
 
         ruHi = String.fromCharCode(1055, 1088, 1080, 1074, 1077, 1090);
         enHi = 'Hi';
 
         content = '';
-        while (content.length < 1000) {
+        while (content.length < 100000) {
             content += ruHi + ' ' + enHi + ' ';
         }
 
         uwords = require('./');
         //xRegExp = require('xregexp').XRegExp;
         xRegExp = require('xregexp');
-        wordXre = xRegExp('\\p{L}+');
 
         start = new Date().getTime();
         words1 = uwords(content);
@@ -148,20 +147,41 @@ module.exports = function (grunt) {
             ' words=' + words1.length +
             ' time=' + (new Date().getTime() - start) + 'ms');
 
+        wordXre = xRegExp('\\p{L}+');
         start = new Date().getTime();
         words2 = [ ];
         xRegExp.forEach(content, wordXre, function (match) {
             words2.push(match[0]);
         });
-        console.log('library=xregexp size=' + content.length +
+        console.log('library=xregexp(forEach non-global) size=' + content.length +
             ' words=' + words2.length +
             ' time=' + (new Date().getTime() - start) + 'ms');
+
+        var wordXreGlobal = xRegExp('\\p{L}+', 'g');
+        start = new Date().getTime();
+        words2 = xRegExp.match(content, wordXreGlobal);
+        console.log('library=xregexp(match global) size=' + content.length +
+            ' words=' + words2.length +
+            ' time=' + (new Date().getTime() - start) + 'ms');
+
+        var noWordXre = xRegExp('\\P{L}+');
+        start = new Date().getTime();
+        words3 = xRegExp.split(content, noWordXre);
+        console.log('library=xregexp(split) size=' + content.length +
+            ' words=' + words3.length +
+            ' time=' + (new Date().getTime() - start) + 'ms');
+            
         for (let i = 0; i < words1.length; i++) {
             if (words1[i] != words2[i]) {
-                throw `mismatch: ${words1[i]} != ${words2[i]} at index ${i}`;
+                throw `mismatch: w1 ${words1[i]} != w2 ${words2[i]} at index ${i}`;
             }
         }
-        console.log('same result: words = ' + words1.slice(0, 20).join(', ') + ', ...');
+        for (let i = 0; i < words1.length; i++) {
+            if (words1[i] != words3[i]) {
+                throw `mismatch: w1 ${words1[i]} != w3 ${words3[i]} at index ${i}`;
+            }
+        }
+        console.log('result is same: words = ' + words1.slice(0, 10).join(', ') + ', ...');
     });
 
     grunt.registerTask('default', [ 'jshint', 'test' ]);

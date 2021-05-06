@@ -7,7 +7,7 @@ Get words from text by grouping together characters from Unicode letter groups
 Installation
 ------------
 
-    npm isntall uwords
+    npm install uwords
 
 Example
 -------

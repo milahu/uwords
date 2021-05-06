@@ -29,11 +29,11 @@ Performance
 
 Run the following command to benchmark the library on your system:
 
-    grunt benchmark
+    npx grunt benchmark
 
 Sample output:
 
-    mb:uwords alex$ grunt benchmark
+    $ npx grunt benchmark
     Running "benchmark" task
     size=10000000 words=2000000 time=1056ms
 
@@ -45,11 +45,11 @@ expressions library [XRegExp][1]. However, it is 1500x slower.
 
 Run the following command to compare the libraries on your system:
 
-    grunt compare-uwords-xregexp
+    npx grunt compare-uwords-xregexp
 
 Sample output:
 
-    mb:uwords alex$ grunt compare-uwords-xregexp --stack
+    $ npx grunt compare-uwords-xregexp --stack
     Running "compare-uwords-xregexp" task
     library=uwords size=1000 words=200 time=2ms
     library=xregexp size=1000 words=200 time=3384ms

@@ -127,7 +127,7 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('compare-uwords-xregexp', function () {
-        var ruHi, enHi, content, uwords, xRegExp, wordXre, words, start;
+        var ruHi, enHi, content, uwords, xRegExp, wordXre, words1, words2, start;
 
         ruHi = String.fromCharCode(1055, 1088, 1080, 1074, 1077, 1090);
         enHi = 'Hi';
@@ -138,23 +138,30 @@ module.exports = function (grunt) {
         }
 
         uwords = require('./');
-        xRegExp = require('xregexp').XRegExp;
+        //xRegExp = require('xregexp').XRegExp;
+        xRegExp = require('xregexp');
         wordXre = xRegExp('\\p{L}+');
 
         start = new Date().getTime();
-        words = uwords(content);
+        words1 = uwords(content);
         console.log('library=uwords size=' + content.length +
-            ' words=' + words.length +
+            ' words=' + words1.length +
             ' time=' + (new Date().getTime() - start) + 'ms');
 
         start = new Date().getTime();
-        words = [ ];
+        words2 = [ ];
         xRegExp.forEach(content, wordXre, function (match) {
-            words.push(match[0]);
+            words2.push(match[0]);
         });
         console.log('library=xregexp size=' + content.length +
-            ' words=' + words.length +
+            ' words=' + words2.length +
             ' time=' + (new Date().getTime() - start) + 'ms');
+        for (let i = 0; i < words1.length; i++) {
+            if (words1[i] != words2[i]) {
+                throw `mismatch: ${words1[i]} != ${words2[i]} at index ${i}`;
+            }
+        }
+        console.log('same result: words = ' + words1.slice(0, 20).join(', ') + ', ...');
     });
 
     grunt.registerTask('default', [ 'jshint', 'test' ]);

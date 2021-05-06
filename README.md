@@ -45,6 +45,7 @@ expressions library [XRegExp][1]. However, it is 1500x slower.
 
 Run the following command to compare the libraries on your system:
 
+    npm i -D xregexp
     npx grunt compare-uwords-xregexp
 
 Sample output:
